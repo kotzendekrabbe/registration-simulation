@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "commonjs",
+    "outDir": "dist",
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "noImplicitAny": true,
+    "pretty": true,
+    "sourceMap": true,
+    "declaration": true,
+    "moduleResolution": "node",
+    "stripInternal": true,
+    "plugins": [{ "name": "typescript-tslint-plugin" }]
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "./src/**/*"
+  ]
+}
