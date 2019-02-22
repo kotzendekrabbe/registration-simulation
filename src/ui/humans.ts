@@ -1,5 +1,6 @@
 import { Human } from './human';
 import { action, computed, observable, IObservableArray } from 'mobx';
+import { LivingHuman } from './livingHuman';
 
 export interface HumansProps {
   readonly humans?: Human[];
@@ -32,9 +33,9 @@ export class Humans {
     }
     if (this.humans.length < scale) {
       for (let i = this.humans.length; i < scale; ++i) {
-        this.humans.push({
-          name: `a${i}`
-        });
+        this.humans.push(
+          new LivingHuman({name: `a${i}`})
+        );
       }
     }
   }

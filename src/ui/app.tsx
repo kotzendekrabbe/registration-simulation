@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { observable, configure, action, IObservableValue } from 'mobx';
+import { observable, configure, action, IObservableValue, observe } from 'mobx';
 import { observer } from 'mobx-react';
 
 // import AppBar from '@material-ui/core/AppBar';
@@ -18,17 +18,18 @@ import { PreBouncer } from './prebouncer';
 import { Welcomers } from './welcomers';
 import { BadgeSearcher } from './badgesearcher';
 import { Securities } from './securities';
+import { LivingHuman } from './livingHuman';
 
 configure({
   enforceActions: 'always'
 });
 
 const registrationSimulation = new RegistrationSimulation({
-  attendees: [{name: 'Feli'}],
-  securities: [{name: 'Hans'}],
-  welcomers: [{name: 'Hans'}],
-  badgeSearcher: [{name: 'Hans'}],
-  preBouncer: [{name: 'Hans'}]
+  attendees: [new LivingHuman({name: 'Feli'})],
+  securities: [new LivingHuman({name: 'Hans'})],
+  welcomers: [new LivingHuman({name: 'Hans'})],
+  badgeSearcher: [new LivingHuman({name: 'Hans'})],
+  preBouncer: [new LivingHuman({name: 'Hans'})]
 });
 
 interface MyAppProps {}
@@ -49,7 +50,7 @@ class MyApp extends React.Component<MyAppProps, {}> {
         <form noValidate autoComplete="off">
           <TextField
             id="filled-name"
-            label="Attendee amount"
+            label="Attendee"
             value={registrationSimulation.attendees.length}
             onChange={(e) => {
               registrationSimulation.attendees.scale(parseInt(e.target.value, 10) || 0);
@@ -61,7 +62,7 @@ class MyApp extends React.Component<MyAppProps, {}> {
 
           <TextField
             id="filled-name"
-            label="Prebouncer amount"
+            label="Prebouncer"
             value={registrationSimulation.preBouncer.length}
             onChange={(e) => {
               registrationSimulation.preBouncer.scale(parseInt(e.target.value, 10) || 0);
@@ -73,8 +74,8 @@ class MyApp extends React.Component<MyAppProps, {}> {
 
           <TextField
             id="filled-name"
-            label="Welcomers amount"
-            value={registrationSimulation.preBouncer.length}
+            label="Welcomers"
+            value={registrationSimulation.welcomers.length}
             onChange={(e) => {
               registrationSimulation.welcomers.scale(parseInt(e.target.value, 10) || 0);
               console.log('onchange', registrationSimulation.welcomers.length, e.target.value);
@@ -82,12 +83,36 @@ class MyApp extends React.Component<MyAppProps, {}> {
             margin="normal"
             variant="filled"
           />
+
+          <TextField
+            id="filled-name"
+            label="BadgeSearcher"
+            value={registrationSimulation.badgeSearcher.length}
+            onChange={(e) => {
+              registrationSimulation.badgeSearcher.scale(parseInt(e.target.value, 10) || 0);
+              console.log('onchange', registrationSimulation.badgeSearcher.length, e.target.value);
+            }}
+            margin="normal"
+            variant="filled"
+          />
+
+        <TextField
+            id="filled-name"
+            label="Securities"
+            value={registrationSimulation.securities.length}
+            onChange={(e) => {
+              registrationSimulation.securities.scale(parseInt(e.target.value, 10) || 0);
+              console.log('onchange', registrationSimulation.securities.length, e.target.value);
+            }}
+            margin="normal"
+            variant="filled"
+          />
         </form>
 
         <ListHumans humans={registrationSimulation.attendees} 
-          factory={(attendee) =>  <Attendee
+          factory={(attendee) => <Attendee
             key={attendee.name}
-            avatar={<Avatar>?</Avatar>}
+            avatar={<Avatar>{attendee.heartbeat}</Avatar>}
             label={attendee.name}
             variant="outlined"
             />
@@ -97,7 +122,7 @@ class MyApp extends React.Component<MyAppProps, {}> {
         <ListHumans humans={registrationSimulation.preBouncer} 
           factory={(preBouncer) =>  <PreBouncer
             key={preBouncer.name}
-            avatar={<Avatar>?</Avatar>}
+            avatar={<Avatar>{preBouncer.heartbeat}</Avatar>}
             label={preBouncer.name}
             variant="outlined"
             />
@@ -107,7 +132,7 @@ class MyApp extends React.Component<MyAppProps, {}> {
         <ListHumans humans={registrationSimulation.welcomers} 
           factory={(welcomers) =>  <Welcomers
             key={welcomers.name}
-            avatar={<Avatar>?</Avatar>}
+            avatar={<Avatar>{welcomers.heartbeat}</Avatar>}
             label={welcomers.name}
             variant="outlined"
             />
@@ -117,7 +142,7 @@ class MyApp extends React.Component<MyAppProps, {}> {
         <ListHumans humans={registrationSimulation.badgeSearcher} 
           factory={(badgeSearcher) =>  <BadgeSearcher
             key={badgeSearcher.name}
-            avatar={<Avatar>?</Avatar>}
+            avatar={<Avatar>{badgeSearcher.heartbeat}</Avatar>}
             label={badgeSearcher.name}
             variant="outlined"
             />
@@ -127,7 +152,7 @@ class MyApp extends React.Component<MyAppProps, {}> {
         <ListHumans humans={registrationSimulation.securities} 
           factory={(securities) =>  <Securities
             key={securities.name}
-            avatar={<Avatar>?</Avatar>}
+            avatar={<Avatar>{securities.heartbeat}</Avatar>}
             label={securities.name}
             variant="outlined"
             />
