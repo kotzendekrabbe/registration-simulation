@@ -1,5 +1,6 @@
-import { Human } from './human';
+import { Human, Roles } from './human';
 import { Humans } from './humans';
+import { observable, action } from 'mobx';
 
 export interface RegistrationSimulationInit {
   readonly securities?: Human[];
@@ -17,10 +18,10 @@ export class RegistrationSimulation {
   public readonly attendees: Humans;
 
   constructor(props: RegistrationSimulationInit) {
-    this.securities = new Humans({ humans: props.securities });
-    this.badgeSearcher = new Humans({ humans: props.badgeSearcher });
-    this.welcomers = new Humans({ humans: props.badgeSearcher });
-    this.preBouncer = new Humans({ humans: props.preBouncer });
-    this.attendees = new Humans({ humans: props.attendees });
+    this.securities = new Humans({ humans: props.securities, roles: [Roles.Security] });
+    this.badgeSearcher = new Humans({ humans: props.badgeSearcher, roles: [Roles.BadgeSearcher] });
+    this.welcomers = new Humans({ humans: props.badgeSearcher, roles: [Roles.BadgeSearcher] });
+    this.preBouncer = new Humans({ humans: props.preBouncer, roles: [Roles.PreBouncer] });
+    this.attendees = new Humans({ humans: props.attendees, roles: [Roles.Attendee] });
   }
 }
