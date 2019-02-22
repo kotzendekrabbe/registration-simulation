@@ -2,36 +2,37 @@ import * as React from 'react';
 import { observable, configure, action, IObservableValue } from 'mobx';
 import { observer } from 'mobx-react';
 
-const Clavator = require('./img/clavator.png');
+// import AppBar from '@material-ui/core/AppBar';
+// import Tabs from '@material-ui/core/Tabs';
+// import Tab from '@material-ui/core/Tab';
 
-// import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-
-import { KeyChainList, CreateKey } from './components/key-chain-list';
-import { CardStatusList } from './components/card-status-list';
-import { ChannelStatus } from './components/controls';
-import { DialogCreateKey } from './components/key-chain-list/dialog-create-key';
-import { Assistent } from './components/assistent';
-import { AppState } from './model/app-state';
-import { AppProgressor } from './app-progressor';
 import {
   Typography,
-  Fab,
-  withStyles,
-  Theme,
-  WithStyles,
-  createStyles,
-  createMuiTheme,
-  MuiThemeProvider
+  Chip,
+  Avatar,
+  TextField
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import { ClavatorFab } from './components/controls';
-import { CacheProvider } from '@emotion/core';
+
+import { RegistrationSimulation } from './registration-simulation';
+import { Attendee } from './attendee';
+import { ListHumans } from './list-humans';
+import { PreBouncer } from './prebouncer';
+import { Welcomers } from './welcomers';
+import { BadgeSearcher } from './badgesearcher';
+import { Securities } from './securities';
+// import AddIcon from '@material-ui/icons/Add';
+// import { CacheProvider } from '@emotion/core';
 
 configure({
   enforceActions: 'always'
+});
+
+const registrationSimulation = new RegistrationSimulation({
+  attendees: [{name: 'Feli'}],
+  securities: [{name: 'Hans'}],
+  welcomers: [{name: 'Hans'}],
+  badgeSearcher: [{name: 'Hans'}],
+  preBouncer: [{name: 'Hans'}]
 });
 
 enum TabsEnum {
@@ -45,22 +46,21 @@ interface TabsEnumProps extends React.Props<{}> {
   readonly my: TabsEnum;
 }
 
-const TabPanel: React.SFC<TabsEnumProps> = observer((props: TabsEnumProps) => {
-  if (props.my !== props.selectedTab) {
-    return <></>;
-  }
-  return (
-    <Typography component="div" style={{ padding: 8 * 3 }}>
-      {props.children}
-    </Typography>
-  );
-});
+// const TabPanel: React.SFC<TabsEnumProps> = observer((props: TabsEnumProps) => {
+//   if (props.my !== props.selectedTab) {
+//     return <></>;
+//   }
+//   return (
+//     <Typography component="div" style={{ padding: 8 * 3 }}>
+//       {props.children}
+//     </Typography>
+//   );
+// });
 
 interface MyAppProps {}
 
 @observer
 class MyApp extends React.Component<MyAppProps, {}> {
-  private readonly appState: AppState;
   public readonly createKeyDialog: IObservableValue<boolean> = observable.box(
     false
   );
@@ -71,67 +71,100 @@ class MyApp extends React.Component<MyAppProps, {}> {
 
   public constructor(props: MyAppProps) {
     super(props);
-    this.appState = AppState.create();
-  }
-
-  public componentWillUnmount(): void {
-    this.appState.channel.close();
   }
 
   public render(): JSX.Element {
+    // <MuiThemeProvider theme={this.appState.appTheme}>
     return (
-      <MuiThemeProvider theme={this.appState.appTheme}>
-        <ChannelStatus channel={this.appState.channel} />
-        {/* <img src={Clavator} className="logo" /> */}
-        <AppProgressor progressState={this.appState.progressorState} />
-        <AppBar position="static">
-          <Tabs
-            value={this.selectedTab.get()}
-            onChange={action((e: any, newValue: TabsEnum) => {
-              this.selectedTab.set(newValue);
-              console.log(newValue);
-            })}
-          >
-            <Tab label="KeyChainList" value={TabsEnum.KeyChainList} />
-            <Tab label="CardStatusList" value={TabsEnum.CardStatusList} />
-            <Tab label="Assistent" value={TabsEnum.Assistent} />
-            {/* <a title="add new key"
-              onClick={action(() => {
-                this.appState.progressorState.open.set(!this.appState.progressorState.open.get());
-                console.log(`open: progressor ${this.appState.progressorState.open.get()}`);
-              })}
-              className="closeBox">
-              <i className="fa fa-comment"></i>
-            </a> */}
-          </Tabs>
-        </AppBar>
-        <TabPanel
-          selectedTab={this.selectedTab.get()}
-          my={TabsEnum.KeyChainList}
-        >
-          <ClavatorFab
-            title="add new key"
-            onClick={action(() => this.createKeyDialog.set(true))}
-          >
-            <AddIcon />
-          </ClavatorFab>
-          <KeyChainList appState={this.appState} />
-          <DialogCreateKey
-            open={this.createKeyDialog.get()}
-            appState={this.appState}
-            onClose={action(() => this.createKeyDialog.set(false))}
+      <>
+        <form noValidate autoComplete="off">
+          <TextField
+            id="filled-name"
+            label="Attendee amount"
+            value={registrationSimulation.attendees.length}
+            onChange={(e) => {
+              registrationSimulation.attendees.scale(parseInt(e.target.value, 10) || 0);
+              console.log('onchange', registrationSimulation.attendees.length, e.target.value);
+            }}
+            margin="normal"
+            variant="filled"
           />
-        </TabPanel>
-        <TabPanel
-          selectedTab={this.selectedTab.get()}
-          my={TabsEnum.CardStatusList}
-        >
-          <CardStatusList appState={this.appState} />
-        </TabPanel>
-        <TabPanel selectedTab={this.selectedTab.get()} my={TabsEnum.Assistent}>
-          <Assistent appState={this.appState} />
-        </TabPanel>
-      </MuiThemeProvider>
+
+          <TextField
+            id="filled-name"
+            label="Prebouncer amount"
+            value={registrationSimulation.preBouncer.length}
+            onChange={(e) => {
+              registrationSimulation.preBouncer.scale(parseInt(e.target.value, 10) || 0);
+              console.log('onchange', registrationSimulation.preBouncer.length, e.target.value);
+            }}
+            margin="normal"
+            variant="filled"
+          />
+
+          <TextField
+            id="filled-name"
+            label="Welcomers amount"
+            value={registrationSimulation.preBouncer.length}
+            onChange={(e) => {
+              registrationSimulation.welcomers.scale(parseInt(e.target.value, 10) || 0);
+              console.log('onchange', registrationSimulation.welcomers.length, e.target.value);
+            }}
+            margin="normal"
+            variant="filled"
+          />
+        </form>
+
+        <ListHumans humans={registrationSimulation.attendees} 
+          factory={(attendee) =>  <Attendee
+            key={attendee.name}
+            avatar={<Avatar>?</Avatar>}
+            label={attendee.name}
+            variant="outlined"
+            />
+          }
+        />
+
+        <ListHumans humans={registrationSimulation.preBouncer} 
+          factory={(preBouncer) =>  <PreBouncer
+            key={preBouncer.name}
+            avatar={<Avatar>?</Avatar>}
+            label={preBouncer.name}
+            variant="outlined"
+            />
+          }
+        />
+
+        <ListHumans humans={registrationSimulation.welcomers} 
+          factory={(welcomers) =>  <Welcomers
+            key={welcomers.name}
+            avatar={<Avatar>?</Avatar>}
+            label={welcomers.name}
+            variant="outlined"
+            />
+          }
+        />
+
+        <ListHumans humans={registrationSimulation.badgeSearcher} 
+          factory={(badgeSearcher) =>  <BadgeSearcher
+            key={badgeSearcher.name}
+            avatar={<Avatar>?</Avatar>}
+            label={badgeSearcher.name}
+            variant="outlined"
+            />
+          }
+        />
+
+        <ListHumans humans={registrationSimulation.securities} 
+          factory={(securities) =>  <Securities
+            key={securities.name}
+            avatar={<Avatar>?</Avatar>}
+            label={securities.name}
+            variant="outlined"
+            />
+          }
+        />
+      </>
     );
   }
 }
