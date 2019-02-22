@@ -1,5 +1,4 @@
 import { Human } from './human';
-import { action } from 'mobx';
 import { Humans } from './humans';
 
 export interface RegistrationSimulationInit {

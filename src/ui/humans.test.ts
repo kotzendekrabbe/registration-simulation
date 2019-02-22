@@ -1,4 +1,3 @@
-import { RegistrationSimulation } from './registration-simulation';
 import { Humans } from './humans';
 
 test('scaleOut', () => {
@@ -30,7 +29,7 @@ test('scaleCut2', () => {
 }
 );
 
-test('scaleCut', () => {
+test('scaleCut3', () => {
   const humans = new Humans({});
   humans.scale(3);
   humans.scale(5);

@@ -7,8 +7,6 @@ import { observer } from 'mobx-react';
 // import Tab from '@material-ui/core/Tab';
 
 import {
-  Typography,
-  Chip,
   Avatar,
   TextField
 } from '@material-ui/core';
@@ -20,8 +18,6 @@ import { PreBouncer } from './prebouncer';
 import { Welcomers } from './welcomers';
 import { BadgeSearcher } from './badgesearcher';
 import { Securities } from './securities';
-// import AddIcon from '@material-ui/icons/Add';
-// import { CacheProvider } from '@emotion/core';
 
 configure({
   enforceActions: 'always'
@@ -35,28 +31,6 @@ const registrationSimulation = new RegistrationSimulation({
   preBouncer: [{name: 'Hans'}]
 });
 
-enum TabsEnum {
-  KeyChainList = 'KeyChainList',
-  CardStatusList = 'CardStatusList',
-  Assistent = 'Assistent'
-}
-
-interface TabsEnumProps extends React.Props<{}> {
-  readonly selectedTab: TabsEnum;
-  readonly my: TabsEnum;
-}
-
-// const TabPanel: React.SFC<TabsEnumProps> = observer((props: TabsEnumProps) => {
-//   if (props.my !== props.selectedTab) {
-//     return <></>;
-//   }
-//   return (
-//     <Typography component="div" style={{ padding: 8 * 3 }}>
-//       {props.children}
-//     </Typography>
-//   );
-// });
-
 interface MyAppProps {}
 
 @observer
@@ -65,16 +39,11 @@ class MyApp extends React.Component<MyAppProps, {}> {
     false
   );
 
-  public readonly selectedTab: IObservableValue<TabsEnum> = observable.box(
-    TabsEnum.KeyChainList
-  );
-
   public constructor(props: MyAppProps) {
     super(props);
   }
 
   public render(): JSX.Element {
-    // <MuiThemeProvider theme={this.appState.appTheme}>
     return (
       <>
         <form noValidate autoComplete="off">

@@ -13,7 +13,6 @@ export class Humans {
   }
 
   @computed public get length(): number {
-    console.log('length', this.humans.length);
     return this.humans.length;
   }
 
@@ -38,6 +37,5 @@ export class Humans {
         });
       }
     }
-    console.log('this humand length', this.humans.length);
   }
 }
