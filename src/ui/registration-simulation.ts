@@ -20,7 +20,7 @@ export class RegistrationSimulation {
   constructor(props: RegistrationSimulationInit) {
     this.securities = new Humans({ humans: props.securities, roles: [Roles.Security] });
     this.badgeSearcher = new Humans({ humans: props.badgeSearcher, roles: [Roles.BadgeSearcher] });
-    this.welcomers = new Humans({ humans: props.badgeSearcher, roles: [Roles.BadgeSearcher] });
+    this.welcomers = new Humans({ humans: props.welcomers, roles: [Roles.Welcomer] });
     this.preBouncer = new Humans({ humans: props.preBouncer, roles: [Roles.PreBouncer] });
     this.attendees = new Humans({ humans: props.attendees, roles: [Roles.Attendee] });
   }
