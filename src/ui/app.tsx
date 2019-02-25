@@ -12,33 +12,26 @@ import {
 } from '@material-ui/core';
 
 import { RegistrationSimulation } from './registration-simulation';
-import { Attendee } from './attendee';
+import { Attendee, Welcomer, PreBouncer, Security, BadgeSearcher  } from './human';
 import { ListHumans } from './list-humans';
-import { PreBouncer } from './prebouncer';
-import { Welcomers } from './welcomers';
-import { BadgeSearcher } from './badgesearcher';
-import { Securities } from './securities';
-import { LivingHuman } from './livingHuman';
+import { HeartBeat } from './heart-beat';
 
 configure({
   enforceActions: 'always'
 });
 
 const registrationSimulation = new RegistrationSimulation({
-  attendees: [new LivingHuman({name: 'Feli'})],
-  securities: [new LivingHuman({name: 'Hans'})],
-  welcomers: [new LivingHuman({name: 'Hans'})],
-  badgeSearcher: [new LivingHuman({name: 'Hans'})],
-  preBouncer: [new LivingHuman({name: 'Hans'})]
+  attendees: [Attendee.create('Feli')],
+  securities: [Security.create('Sicher Ist')],
+  welcomers: [],
+  badgeSearcher: [],
+  preBouncer: []
 });
 
 interface MyAppProps {}
 
 @observer
 class MyApp extends React.Component<MyAppProps, {}> {
-  public readonly createKeyDialog: IObservableValue<boolean> = observable.box(
-    false
-  );
 
   public constructor(props: MyAppProps) {
     super(props);
@@ -52,9 +45,8 @@ class MyApp extends React.Component<MyAppProps, {}> {
             id="filled-name"
             label="Attendee"
             value={registrationSimulation.attendees.length}
-            onChange={(e) => {
+            onChange={e => {
               registrationSimulation.attendees.scale(parseInt(e.target.value, 10) || 0);
-              console.log('onchange', registrationSimulation.attendees.length, e.target.value);
             }}
             margin="normal"
             variant="filled"
@@ -66,7 +58,6 @@ class MyApp extends React.Component<MyAppProps, {}> {
             value={registrationSimulation.preBouncer.length}
             onChange={(e) => {
               registrationSimulation.preBouncer.scale(parseInt(e.target.value, 10) || 0);
-              console.log('onchange', registrationSimulation.preBouncer.length, e.target.value);
             }}
             margin="normal"
             variant="filled"
@@ -78,7 +69,6 @@ class MyApp extends React.Component<MyAppProps, {}> {
             value={registrationSimulation.welcomers.length}
             onChange={(e) => {
               registrationSimulation.welcomers.scale(parseInt(e.target.value, 10) || 0);
-              console.log('onchange', registrationSimulation.welcomers.length, e.target.value);
             }}
             margin="normal"
             variant="filled"
@@ -90,7 +80,6 @@ class MyApp extends React.Component<MyAppProps, {}> {
             value={registrationSimulation.badgeSearcher.length}
             onChange={(e) => {
               registrationSimulation.badgeSearcher.scale(parseInt(e.target.value, 10) || 0);
-              console.log('onchange', registrationSimulation.badgeSearcher.length, e.target.value);
             }}
             margin="normal"
             variant="filled"
@@ -109,55 +98,15 @@ class MyApp extends React.Component<MyAppProps, {}> {
           />
         </form>
 
-        <ListHumans humans={registrationSimulation.attendees} 
-          factory={(attendee) => <Attendee
-            key={attendee.name}
-            avatar={<Avatar>{attendee.heartbeat}</Avatar>}
-            label={attendee.name}
-            variant="outlined"
-            />
-          }
-        />
+        <ListHumans humans={registrationSimulation.attendees} />
 
-        <ListHumans humans={registrationSimulation.preBouncer} 
-          factory={(preBouncer) =>  <PreBouncer
-            key={preBouncer.name}
-            avatar={<Avatar>{preBouncer.heartbeat}</Avatar>}
-            label={preBouncer.name}
-            variant="outlined"
-            />
-          }
-        />
+        <ListHumans humans={registrationSimulation.preBouncer} />
 
-        <ListHumans humans={registrationSimulation.welcomers} 
-          factory={(welcomers) =>  <Welcomers
-            key={welcomers.name}
-            avatar={<Avatar>{welcomers.heartbeat}</Avatar>}
-            label={welcomers.name}
-            variant="outlined"
-            />
-          }
-        />
+        <ListHumans humans={registrationSimulation.welcomers} />
 
-        <ListHumans humans={registrationSimulation.badgeSearcher} 
-          factory={(badgeSearcher) =>  <BadgeSearcher
-            key={badgeSearcher.name}
-            avatar={<Avatar>{badgeSearcher.heartbeat}</Avatar>}
-            label={badgeSearcher.name}
-            variant="outlined"
-            />
-          }
-        />
+        <ListHumans humans={registrationSimulation.badgeSearcher} />
 
-        <ListHumans humans={registrationSimulation.securities} 
-          factory={(securities) =>  <Securities
-            key={securities.name}
-            avatar={<Avatar>{securities.heartbeat}</Avatar>}
-            label={securities.name}
-            variant="outlined"
-            />
-          }
-        />
+        <ListHumans humans={registrationSimulation.securities} />
       </>
     );
   }
