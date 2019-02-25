@@ -2,19 +2,16 @@ import * as React from 'react';
 import { observable, configure, action, IObservableValue, observe } from 'mobx';
 import { observer } from 'mobx-react';
 
-// import AppBar from '@material-ui/core/AppBar';
-// import Tabs from '@material-ui/core/Tabs';
-// import Tab from '@material-ui/core/Tab';
-
 import {
-  Avatar,
   TextField
 } from '@material-ui/core';
 
 import { RegistrationSimulation } from './registration-simulation';
-import { Attendee, Welcomer, PreBouncer, Security, BadgeSearcher  } from './human';
+import { Attendee, Welcomer, PreBouncer, Security, BadgeSearcher, Roles  } from './human';
 import { ListHumans } from './list-humans';
-import { HeartBeat } from './heart-beat';
+import { RegistrationTicker } from './ticker';
+import { QAttendeeFactory } from './q-attendee-factory';
+import { Humans } from './humans';
 
 configure({
   enforceActions: 'always'
@@ -27,6 +24,18 @@ const registrationSimulation = new RegistrationSimulation({
   badgeSearcher: [],
   preBouncer: []
 });
+
+const attendeeQFactory = new QAttendeeFactory({
+    humans: registrationSimulation.attendees,
+    ticker: new RegistrationTicker(),
+    maxHumansPerPuls: 10,
+    frequencyMSec: 60000,
+    amountHumans: 1000,
+    peakMSec: 300,
+    totalMSec: 3600000,
+});
+
+attendeeQFactory.start();
 
 interface MyAppProps {}
 
