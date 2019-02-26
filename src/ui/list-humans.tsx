@@ -11,7 +11,7 @@ export interface ListHumansProps {
 export const ListHumans = observer((props: ListHumansProps): JSX.Element => {
   return (
       <>
-        { props.humans.map((human, idx) => <HumanComponent key={idx} human={human} />) }
+        { props.humans.map((human, idx) => <HumanComponent key={idx} idx={idx} human={human} />) }
       </>
     );
 });
