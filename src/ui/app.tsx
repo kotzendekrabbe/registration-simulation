@@ -107,15 +107,14 @@ class MyApp extends React.Component<MyAppProps, {}> {
           />
         </form>
 
-        <ListHumans humans={registrationSimulation.attendees} />
 
-        <ListHumans humans={registrationSimulation.preBouncer} />
-
-        <ListHumans humans={registrationSimulation.welcomers} />
-
-        <ListHumans humans={registrationSimulation.badgeSearcher} />
-
-        <ListHumans humans={registrationSimulation.securities} />
+        <svg height="100%" width="100%">
+          <ListHumans humans={registrationSimulation.attendees} />
+          <ListHumans humans={registrationSimulation.preBouncer} />
+          <ListHumans humans={registrationSimulation.welcomers} />
+          <ListHumans humans={registrationSimulation.badgeSearcher} />
+          <ListHumans humans={registrationSimulation.securities} />
+        </svg>
       </>
     );
   }
